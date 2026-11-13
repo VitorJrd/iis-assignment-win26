@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="robot_arm" params="link1_length link2_length base_height">
+
+<!--
+        The arm will be composed of two links connected by a joint, and the parent link will be connected to the base
+            
+        -->
+        
+    <link name="arm_link1">
+          <visual>
+            <origin xyz="0 0 ${link1_length / 2}" rpy="0 0 0"/>
+            <geometry>
+              <cylinder radius="0.05" length="${link1_length}"/>
+            </geometry>
+            <material name="blue">
+              <color rgba="0.1 0.3 0.9 1.0"/>
+            </material>
+          </visual>
+
+    
+        <collision>
+          <origin xyz="0 0 ${link1_length / 2}" rpy="0 0 0"/>
+          <geometry>
+            <cylinder radius="0.05" length="${link1_length}"/>
+          </geometry>
+        </collision>
+      
+        <inertial>
+          <origin xyz="0 0 ${link1_length / 2}" rpy="0 0 0"/>
+          <mass value="1.0"/>
+          <inertia
+            ixx="${(1.0 / 12.0) * (3 * 0.05 * 0.05 + link1_length * link1_length)}"
+            ixy="0"
+            ixz="0"
+            iyy="${(1.0 / 12.0) * (3 * 0.05 * 0.05 + link1_length * link1_length)}"
+            iyz="0"
+            izz="${0.5 * 1.0 * 0.05 * 0.05}"/>
+        </inertial>
+    </link>
+
+
+    <!--1st joint to connect link1 to base (1.57 rad is approximately 90 degrees-->
+    <joint name="shoulder_joint" type="revolute">
+      <parent link="base_link"/>
+      <child link="arm_link1"/>
+    
+      <origin xyz="0 0 ${base_height}" rpy="0 0 0"/>
+    
+      <axis xyz="0 1 0"/>
+    
+      <limit lower="-1.57" upper="1.57" effort="50" velocity="1"/>
+    </joint>
+
+
+    
+    <link name="arm_link2">
+      <visual>
+        <origin xyz="0 0 ${link2_length / 2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.04" length="${link2_length}"/>
+        </geometry>
+        <material name="orange">
+          <color rgba="1.0 0.5 0.0 1.0"/>
+        </material>
+      </visual>
+
+    
+        <collision>
+          <origin xyz="0 0 ${link2_length / 2}" rpy="0 0 0"/>
+          <geometry>
+            <cylinder radius="0.04" length="${link2_length}"/>
+          </geometry>
+        </collision>
+
+                
+        <inertial>
+          <origin xyz="0 0 ${link2_length / 2}" rpy="0 0 0"/>
+          <mass value="0.8"/>
+          <inertia
+            ixx="${(0.8 / 12.0) * (3 * 0.04 * 0.04 + link2_length * link2_length)}"
+            ixy="0"
+            ixz="0"
+            iyy="${(0.8 / 12.0) * (3 * 0.04 * 0.04 + link2_length * link2_length)}"
+            iyz="0"
+            izz="${0.5 * 0.8 * 0.04 * 0.04}"/>
+        </inertial>
+    </link>
+
+
+    <!-- Joint that connects both arm links-->     
+    <joint name="elbow_joint" type="revolute">
+      <parent link="arm_link1"/>
+      <child link="arm_link2"/>
+    
+      <origin xyz="0 0 ${link1_length}" rpy="0 0 0"/>
+    
+      <axis xyz="0 1 0"/>
+    
+      <limit lower="-1.57" upper="1.57" effort="30" velocity="1"/>
+    </joint>
+
+
+
+    </xacro:macro>
+</robot>

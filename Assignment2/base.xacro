@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- 2 parameters for the base size -->
+    <xacro:macro name="robot_base" params="base_radius base_height">
+
+
+    <link name="base_link">
+      <visual>
+          <!-- Center of the link at the center of the cylinder -->
+        <origin xyz="0 0 ${base_height / 2}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${base_radius}" length="${base_height}"/>
+        </geometry>
+      </visual>
+        
+        <collision>
+          <origin xyz="0 0 ${base_height / 2}" rpy="0 0 0"/>
+          <geometry>
+            <cylinder radius="${base_radius}" length="${base_height}"/>
+          </geometry>
+        </collision>   
+                <inertial>
+          <origin xyz="0 0 ${base_height / 2}" rpy="0 0 0"/>
+          <mass value="5.0"/>
+                    
+          <inertia
+            ixx="${(5.0 / 12.0) * (3 * base_radius * base_radius + base_height * base_height)}"
+            ixy="0"
+            ixz="0"
+            iyy="${(5.0 / 12.0) * (3 * base_radius * base_radius + base_height * base_height)}"
+            iyz="0"
+            izz="${0.5 * 5.0 * base_radius * base_radius}"/>
+        </inertial>
+    </link>
+
+        <!-- For the mass moment of intertia of a cylinder of 5kg, I got the formulas from the following website:
+        https://amesweb.info/inertia/mass-moment-of-inertia-cylinder.aspx
+        - For ixy, ixz and iyz I just kept them at 0 like in the sphere inertia example, in the kitchen.urdf.xacro file
+        -->
+      
+    </xacro:macro>
+</robot>

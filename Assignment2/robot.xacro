@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot name="eva_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- We will begin by importing the 3 xacro files -->
+    <xacro:include filename="base.xacro" />
+    <xacro:include filename="arm.xacro" />
+    <xacro:include filename="gripper.xacro" />
+
+
+
+    <!--
+    We will build the robot with our own parameters by calling the specific xacro files 
+    - Right arm: 0.45
+    - Left arm: 0.4 
+    so together 0.85m
+    If we include the base (0.6m) the robot can then reach a vertical height of 1.45m
+    -->
+    <xacro:robot_base base_radius="0.25" base_height="0.6"/>
+    <xacro:robot_arm link1_length="0.45" link2_length="0.4" base_height="0.6"/>
+    <xacro:robot_gripper gripper_span="0.14" link2_length="0.4"/>
+
+
+
+
+
+
+
+
+
+
+</robot>
