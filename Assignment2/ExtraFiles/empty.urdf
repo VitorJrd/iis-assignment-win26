@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+
+<robot name="empty_scene">
+
+<!-- 
+Let's start by creating a 40cm x 40cm x 20cm box
+    -->
+<link name="my_first_box">
+    <!-- visual describes how the component looks -->
+  <visual>
+      
+      <!-- origin changes the object's postion
+        - xyz XYZ axes
+        - rpy rotation around those axes
+      -->
+      <origin xyz="0 0 0.5" rpy="0 0.5 0"/>
+      
+      <!-- geometry specifies its geometric shape -->
+    <geometry>
+      
+        <!--<box size="0.4 0.4 0.2"/>-->
+
+        <!--<cylinder radius="0.1" length="0.4"/> -->
+
+        <sphere radius="0.15"/>
+    </geometry>
+      
+    <material name="blue">
+      <color rgba="0.1 0.3 0.9 1.0"/>
+    </material>
+  </visual>
+
+    <!-- the sphere has a collision radius of 15cm (coords need to be the same as the visual sphere)-->
+    <collision>
+      <origin xyz="0 0 0.5" rpy="0 0.5 0"/>
+      <geometry>
+        <sphere radius="0.15"/>
+      </geometry>
+    </collision>
+
+        
+    <inertial>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <mass value="1.0"/>
+      <inertia ixx="0.009" ixy="0" ixz="0"
+               iyy="0.009" iyz="0" izz="0.009"/>
+    </inertial>
+
+
+</link>
+
+
+
+<link name="second_box">
+  <visual>
+    <origin xyz="0.5 0 0.5" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.2 0.2 0.2"/>
+    </geometry>
+  </visual>
+</link>
+
+
+<!-- 
+    We can connect both objects with a fixed joint that does not allow any movement between them 
+    - It has a name and type
+    - A parent (sphere) and a child (cube) link
+    - Origin (joint position and rotation relative to the PARENT
+    -->
+<!--
+<joint name="sphere_to_box" type="fixed">
+  <parent link="my_first_box"/>
+  <child link="second_box"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+</joint>
+-->
+
+<!--
+    Revolute joint example (allows rotation)
+    - Parent: the door frame
+    - Child: the door
+    - Joint: the door hinge
+    (the child rotates around the parent)
+-->
+<!--
+<joint name="sphere_to_box" type="revolute">
+  <parent link="my_first_box"/>
+  <child link="second_box"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+
+     (1 to indicate the axis around which the rotation takes place) 
+  <axis xyz="0 0 1"/>
+  <limit lower="0" upper="1.57" effort="10" velocity="1"/>
+</joint>
+-->
+
+<!--
+    Prismatic joint (linear movement)
+-->
+<joint name="sphere_to_box" type="prismatic">
+  <parent link="my_first_box"/>
+  <child link="second_box"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <axis xyz="1 0 0"/>
+  <limit lower="0" upper="0.5" effort="10" velocity="1"/>
+</joint>
+
+
+
+
+
+
+</robot>
